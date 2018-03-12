@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Grafica</string>
+    <string name="app_principal">Via Boleto</string>
+
+    <!--*********************MENSAGENS TELA LOGIN-->
+    <string name="login_titulo">Seja bem vindo, favor efetue o login</string>
+    <string name="login_usuario">Usuário:</string>
+    <string name="login_usuario_hint">Digite aqui o usuário</string>
+    <string name="login_senha">Senha:</string>
+    <string name="login_senha_hint">Digite aqui a senha</string>
+    <string name="login_botao_login">Entrar</string>
+    <string name="login_img_desc">Logo empresa</string>
+
+    <!--*********************MENSAGENS ERRO-->
+    <string name="login_erro">Erro ao efetuar Login: </string>
+    <string name="erro_campos_brancos">Preencha os campos de usuario e senha</string>
 </resources>
