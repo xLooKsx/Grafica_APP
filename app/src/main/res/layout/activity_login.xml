@@ -56,7 +56,9 @@
                 android:layout_marginStart="5dp"
                 android:ems="10"
                 android:hint="@string/login_usuario_hint"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:maxLength="12"
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -77,7 +79,8 @@
                 android:layout_marginStart="5dp"
                 android:ems="10"
                 android:hint="@string/login_senha_hint"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:maxLength="30" />
 
             <Button
                 android:id="@+id/btn_entrar"
