@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dinheiro"
+            android:icon="@drawable/ic_money_black"
+            android:title="@string/tela_principal_vendas_por_dinheiro_label" />
+        <item
+            android:id="@+id/nav_cartao_debito"
+            android:icon="@drawable/ic_debit_card_black"
+            android:title="@string/tela_principal_vendas_por_cartao_de_debito_label" />
+        <item
+            android:id="@+id/nav_cartao_credito"
+            android:icon="@drawable/ic_credit_card_black"
+            android:title="@string/tela_principal_vendas_por_cartao_de_credito_label" />
+
+    </group>
+
+    <item android:title="@string/tela_principal_configuracoes_label">
+        <menu>
+            <item
+                android:id="@+id/nav_config_email"
+                android:icon="@drawable/ic_email_black"
+                android:title="@string/tela_principal_configurar_email_label" />
+
+            <item
+                android:id="@+id/nav_sair"
+                android:icon="@drawable/ic_exit_to_app_black"
+                android:title="@string/tela_principal_sair_label" />
+        </menu>
+    </item>
+
+</menu>

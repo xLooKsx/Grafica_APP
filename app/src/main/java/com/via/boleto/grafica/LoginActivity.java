@@ -36,19 +36,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
+    public void onBackPressed() {
+        System.exit(0);
+    }
+
+    @Override
     public void onClick(View view) {
 
         usuario = txtSenha.getText().toString();
         senha = txtUsuario.getText().toString();
 
-        if (GraficaUtils.notNullNotBlank(usuario) && GraficaUtils.notNullNotBlank(senha)){
+        //if (GraficaUtils.notNullNotBlank(usuario) && GraficaUtils.notNullNotBlank(senha)){
 
-            Intent it = new Intent(LoginActivity.this, MenuActivity.class);
+            Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
             startActivity(it);
 
-        }else{
+        /*}else{
             Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_campos_brancos), Toast.LENGTH_LONG).show();
-        }
+        }*/
 
 
     }
