@@ -9,11 +9,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.TextView;
 
+import com.via.boleto.grafica.model.ProdutoTO;
+
+import java.util.List;
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,6 +52,28 @@ public class PrincipalActivity extends AppCompatActivity
         fragmentTransaction.commit();
 
         navigationView.setCheckedItem(R.id.nav_dinheiro);
+
+        iRetrofit retrofit = iRetrofit.retrofit.create(iRetrofit.class);
+        final Call<List<ProdutoTO>> call = retrofit.getProduto();
+
+        call.enqueue(new Callback<List<ProdutoTO>>() {
+            @Override
+            public void onResponse(Call<List<ProdutoTO>> call, Response<List<ProdutoTO>> response) {
+                int code = response.code();
+                if (code == 200){
+                    List<ProdutoTO> listaProdutos = response.body();
+                    for (ProdutoTO produto : listaProdutos){
+                        Log.d("Nome do produto:", produto.getNome());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProdutoTO>> call, Throwable t) {
+
+            }
+        });
+
     }
 
     public void setActionBarTitle(String title){
