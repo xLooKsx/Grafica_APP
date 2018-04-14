@@ -16,6 +16,7 @@
     <string name="erro_campos_brancos">Preencha os campos de usuario e senha</string>
     <string name="title_activity_principal">PrincipalActivity</string>
 
+    <!--*********************Menu de Navegacao-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -25,6 +26,7 @@
     <string name="tela_principal_vendas_por_dinheiro_label">Vendas por Dinheiro</string>
     <string name="tela_principal_vendas_por_cartao_de_credito_label">Vendas por cartão de Crédito</string>
     <string name="tela_principal_vendas_por_cartao_de_debito_label">Vendas por cartão de Débito</string>
+    <string name="tela_principal_lista_produtos_label">Lista de Produtos</string>
     <string name="tela_principal_sair_label">Sair</string>
 
     <!-- TODO: Remove or change this placeholder text -->

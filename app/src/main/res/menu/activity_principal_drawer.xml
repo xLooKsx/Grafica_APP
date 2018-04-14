@@ -17,6 +17,11 @@
             android:icon="@drawable/ic_credit_card_black"
             android:title="@string/tela_principal_vendas_por_cartao_de_credito_label" />
 
+        <item
+            android:id="@+id/nav_lista_produtos"
+            android:icon="@drawable/ic_list_produtos"
+            android:title="@string/tela_principal_lista_produtos_label" />
+
     </group>
 
     <item android:title="@string/tela_principal_configuracoes_label">
