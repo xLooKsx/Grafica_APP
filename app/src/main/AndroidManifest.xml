@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.via.boleto.grafica">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_principal"
@@ -18,9 +20,14 @@
         </activity>
         <activity
             android:name=".PrincipalActivity"
+            android:configChanges="orientation|screenSize|screenLayout"
             android:label="@string/title_activity_principal"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize|screenLayout" />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ListaProdutosActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PrincipalActivity"/>
+        </activity>
     </application>
 
 </manifest>
