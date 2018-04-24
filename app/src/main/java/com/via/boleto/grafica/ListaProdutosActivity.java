@@ -4,15 +4,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.via.boleto.grafica.model.ProdutoTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ListaProdutosActivity extends AppCompatActivity {
 
-    private List<ProdutoTO> produtos;
+//    private List<ProdutoTO> produtos;
     private RecyclerView rv;
 
     @Override
@@ -27,19 +32,29 @@ public class ListaProdutosActivity extends AppCompatActivity {
         rv.setHasFixedSize(true);
 
         initializeData();
-        initializeAdapter();
+//        initializeAdapter();
     }
 
     private void initializeData(){
-        produtos = new ArrayList<>();
-        produtos.add(new ProdutoTO(1, "papel", 2.6, "não Comestivel"));
-        produtos.add(new ProdutoTO(1, "cartolina", 0.6, "não Comestivel"));
-        produtos.add(new ProdutoTO(1, "EVA", 4.6, "não Comestivel"));
 
-    }
+        iRetrofit retrofit = iRetrofit.retrofit.create(iRetrofit.class);
+        final Call<List<ProdutoTO>> call = retrofit.getProduto();
 
-    private void initializeAdapter(){
-        RVAdapter adapter = new RVAdapter(produtos);
-        rv.setAdapter(adapter);
+        call.enqueue(new Callback<List<ProdutoTO>>() {
+            @Override
+            public void onResponse(Call<List<ProdutoTO>> call, Response<List<ProdutoTO>> response) {
+                int code = response.code();
+                if (code == 200){
+                    List<ProdutoTO> listaProdutos = response.body();
+                    RVAdapter adapter = new RVAdapter(listaProdutos);
+                    rv.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProdutoTO>> call, Throwable t) {
+
+            }
+        });
     }
 }
