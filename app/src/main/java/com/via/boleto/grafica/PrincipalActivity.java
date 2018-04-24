@@ -150,9 +150,9 @@ public class PrincipalActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_sair:
-                Intent intentLogin = new Intent(PrincipalActivity.this, LoginActivity.class);
+                //Intent intentLogin = new Intent(PrincipalActivity.this, LoginActivity.class);
                 finish();
-                startActivity(intentLogin);
+                //startActivity(intentLogin);
                 break;
 
             case R.id.nav_lista_produtos:

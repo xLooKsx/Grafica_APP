@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Grafica</string>
     <string name="app_principal">Via Boleto</string>
+    <string name="title_activity_principal">PrincipalActivity</string>
 
     <!--*********************MENSAGENS TELA LOGIN-->
     <string name="login_titulo">Seja bem vindo, favor efetue o login</string>
@@ -10,11 +11,16 @@
     <string name="login_senha_hint">Digite aqui a senha</string>
     <string name="login_botao_login">Entrar</string>
     <string name="login_img_desc">Logo empresa</string>
+    <string name="login_salvo">Usuario salvo</string>
 
     <!--*********************MENSAGENS ERRO-->
     <string name="login_erro">Erro ao efetuar Login: </string>
     <string name="erro_campos_brancos">Preencha os campos de usuario e senha</string>
-    <string name="title_activity_principal">PrincipalActivity</string>
+    <string name="erro_campos_brancos_login">Favor preencher o campo de login</string>
+    <string name="erro_campos_brancos_senha">Favor preencher o campo de senha</string>
+    <string name="erro_usuario_senha">Verifique os campos de usuario e senha</string>
+    <string name="erro_conexao">Verifique a sua connexão com a internet</string>
+
 
     <!--*********************Menu de Navegacao-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
