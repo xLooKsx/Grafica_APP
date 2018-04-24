@@ -7,6 +7,17 @@ public class AutenticarPostTO {
     private String usuario;
     private String senha;
 
+
+    public AutenticarPostTO() {
+
+        this("", "");
+    }
+
+    public AutenticarPostTO(String usuario, String senha) {
+        this.usuario = usuario;
+        this.senha = senha;
+    }
+
     public String getUsuario() {
         return usuario;
     }

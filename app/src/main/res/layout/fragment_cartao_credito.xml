@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.via.boleto.grafica.CartaoCreditoFragment">
+    tools:context="com.via.boleto.grafica.fragment.CartaoCreditoFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.via.boleto.grafica.PrincipalActivity"
+    tools:context="com.via.boleto.grafica.activity.PrincipalActivity"
     tools:showIn="@layout/app_bar_principal">
 
     <FrameLayout

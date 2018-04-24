@@ -1,4 +1,4 @@
-package com.via.boleto.grafica;
+package com.via.boleto.grafica.util;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.via.boleto.grafica.R;
 import com.via.boleto.grafica.model.ProdutoTO;
 
 import java.util.List;
@@ -20,11 +21,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
     public static class PersonViewHolder extends RecyclerView.ViewHolder {
 
-        CardView cv;
-        TextView personName;
-        TextView personAge;
-        ImageView personPhoto;
-        TextView valorVenda;
+        public CardView cv;
+        public TextView personName;
+        public TextView personAge;
+        public ImageView personPhoto;
+        public TextView valorVenda;
 
         PersonViewHolder(View itemView) {
             super(itemView);
@@ -35,11 +36,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
         }
     }
 
-    List<ProdutoTO> persons;
+    public List<ProdutoTO> persons;
 
-    RVAdapter(List<ProdutoTO> persons){
+    public RVAdapter(List<ProdutoTO> persons) {
         this.persons = persons;
     }
+
+    /* RVAdapter(List<ProdutoTO> persons){
+        this.persons = persons;
+    }*/
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

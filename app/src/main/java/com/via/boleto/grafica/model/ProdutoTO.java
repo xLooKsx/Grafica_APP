@@ -8,6 +8,10 @@ public class ProdutoTO {
     private Double valorVenda;
     private String tipoProduto;
 
+    public ProdutoTO() {
+        this(0, "", 0.0, "");
+    }
+
     public ProdutoTO(int produtoId, String nome, Double valorVenda, String tipoProduto) {
         this.produtoId = produtoId;
         this.nome = nome;

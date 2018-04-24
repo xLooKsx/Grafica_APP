@@ -1,4 +1,4 @@
-package com.via.boleto.grafica;
+package com.via.boleto.grafica.util;
 /**
  * Created by Matheus Silva on 09/04/2018.
  */

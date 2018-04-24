@@ -1,4 +1,4 @@
-package com.via.boleto.grafica;
+package com.via.boleto.grafica.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

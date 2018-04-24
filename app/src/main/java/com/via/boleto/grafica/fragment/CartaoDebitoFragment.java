@@ -1,4 +1,4 @@
-package com.via.boleto.grafica;
+package com.via.boleto.grafica.fragment;
 
 
 import android.os.Bundle;
@@ -7,14 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.via.boleto.grafica.R;
+import com.via.boleto.grafica.activity.PrincipalActivity;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ConfigEmailFragment extends Fragment {
+public class CartaoDebitoFragment extends Fragment {
 
 
-    public ConfigEmailFragment() {
+    public CartaoDebitoFragment() {
         // Required empty public constructor
     }
 
@@ -22,9 +25,9 @@ public class ConfigEmailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((PrincipalActivity)getActivity()).setActionBarTitle(getString(R.string.tela_principal_configurar_email_label));
+        ((PrincipalActivity)getActivity()).setActionBarTitle("Vendas por Débito");
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_config_email, container, false);
+        return inflater.inflate(R.layout.fragment_cartao_debito, container, false);
     }
 
 }
