@@ -52,28 +52,6 @@ public class PrincipalActivity extends AppCompatActivity
         fragmentTransaction.commit();
 
         navigationView.setCheckedItem(R.id.nav_dinheiro);
-
-        iRetrofit retrofit = iRetrofit.retrofit.create(iRetrofit.class);
-        final Call<List<ProdutoTO>> call = retrofit.getProduto();
-
-        call.enqueue(new Callback<List<ProdutoTO>>() {
-            @Override
-            public void onResponse(Call<List<ProdutoTO>> call, Response<List<ProdutoTO>> response) {
-                int code = response.code();
-                if (code == 200){
-                    List<ProdutoTO> listaProdutos = response.body();
-                    for (ProdutoTO produto : listaProdutos){
-                        Log.d("Nome do produto:", produto.getNome());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ProdutoTO>> call, Throwable t) {
-
-            }
-        });
-
     }
 
     public void setActionBarTitle(String title){

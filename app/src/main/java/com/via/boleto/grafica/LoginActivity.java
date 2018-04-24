@@ -68,10 +68,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         autenticar.setUsuario(usuario);
         autenticar.setSenha(senha);
 
-        //sendNeworkRequest(autenticar);
+        sendNeworkRequest(autenticar);
 
-        Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
-        startActivity(it);
     }
 
     public void sendNeworkRequest(AutenticarPostTO autenticar){

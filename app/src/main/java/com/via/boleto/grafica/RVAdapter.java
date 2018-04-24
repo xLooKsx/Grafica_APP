@@ -24,12 +24,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
         TextView personName;
         TextView personAge;
         ImageView personPhoto;
+        TextView valorVenda;
 
         PersonViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
             personName = (TextView)itemView.findViewById(R.id.nomeProduto);
             personAge = (TextView)itemView.findViewById(R.id.descricaoProduto);
+            valorVenda = (TextView)itemView.findViewById(R.id.valorVenda);
         }
     }
 
@@ -55,6 +57,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
     public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
         personViewHolder.personName.setText(persons.get(i).getNome());
         personViewHolder.personAge.setText(persons.get(i).getTipoProduto());
+        personViewHolder.valorVenda.setText(persons.get(i).getValorVenda().toString());
     }
 
     @Override
