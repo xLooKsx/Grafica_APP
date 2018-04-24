@@ -82,6 +82,13 @@
                 android:inputType="textPassword"
                 android:maxLength="30" />
 
+            <CheckBox
+                android:id="@+id/chkBoxLembrarLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Lembrar Login" />
+
             <Button
                 android:id="@+id/btn_entrar"
                 android:layout_width="match_parent"

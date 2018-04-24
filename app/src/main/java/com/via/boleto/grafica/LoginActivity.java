@@ -6,20 +6,15 @@ package com.via.boleto.grafica;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.via.boleto.grafica.model.AutenticacaoTO;
 import com.via.boleto.grafica.model.AutenticarPostTO;
-import com.via.boleto.grafica.model.ProdutoTO;
 
-import java.util.List;
-
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,22 +23,30 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText txtUsuario;
-    EditText txtSenha;
-    Button btnEntrar;
+    private EditText txtUsuario;
+    private EditText txtSenha;
+    private Button btnEntrar;
 
-    String usuario="";
-    String senha="";
+    private CheckBox chkBoxLogin;
+
+    private String usuario="";
+    private String senha="";
+
+    private StringBuilder mensagemValidacao = new StringBuilder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         inicializarObjetos();
+        carregarUsuario();
         btnEntrar.setOnClickListener(this);
 
     }
 
+    private void carregarUsuario() {
+        txtUsuario.setText(new SharedPref().getLogin(LoginActivity.this, "login"));
+    }
 
 
     private void inicializarObjetos(){
@@ -51,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         txtUsuario =(EditText) findViewById(R.id.txt_usuario);
         txtSenha =(EditText) findViewById(R.id.txt_senha);
         btnEntrar =(Button) findViewById(R.id.btn_entrar);
+        chkBoxLogin = (CheckBox) findViewById(R.id.chkBoxLembrarLogin);
     }
 
     @Override
@@ -61,15 +65,44 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
 
-        usuario = txtSenha.getText().toString();
-        senha = txtUsuario.getText().toString();
+        usuario = txtUsuario.getText().toString();
+        senha  = txtSenha.getText().toString();
 
-        AutenticarPostTO autenticar = new AutenticarPostTO();
-        autenticar.setUsuario(usuario);
-        autenticar.setSenha(senha);
+        if (validarUsuarioSenha()){
 
-        sendNeworkRequest(autenticar);
+            AutenticarPostTO autenticar = new AutenticarPostTO();
+            autenticar.setUsuario(usuario);
+            autenticar.setSenha(senha);
+            salvarUsuario();
+            //sendNeworkRequest(autenticar);
 
+            Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
+            startActivity(it);
+        }else{
+            Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+mensagemValidacao.toString(), Toast.LENGTH_LONG).show();
+            mensagemValidacao.delete(0, mensagemValidacao.length());
+        }
+    }
+
+    private boolean validarUsuarioSenha() {
+
+        if (!GraficaUtils.notNullNotBlank(usuario)){
+            mensagemValidacao.append(getString(R.string.erro_campos_brancos_login)+"\n");
+        }
+
+        if (!GraficaUtils.notNullNotBlank(senha)){
+            mensagemValidacao.append(getString(R.string.erro_campos_brancos_senha));
+        }
+
+        return mensagemValidacao.toString().length() == 0;
+    }
+
+    private void salvarUsuario() {
+
+        if (chkBoxLogin.isChecked() && GraficaUtils.notNullNotBlank(usuario)){
+            new SharedPref().setLogin(LoginActivity.this, "login", usuario);
+            Toast.makeText(LoginActivity.this,  getString(R.string.login_salvo), Toast.LENGTH_LONG).show();
+        }
     }
 
     public void sendNeworkRequest(AutenticarPostTO autenticar){
@@ -90,14 +123,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     startActivity(it);
                 }
                 else{
-                    Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_campos_brancos), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_usuario_senha), Toast.LENGTH_LONG).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<AutenticacaoTO> call, Throwable t) {
-                Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_campos_brancos), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_conexao), Toast.LENGTH_LONG).show();
             }
         });
 
