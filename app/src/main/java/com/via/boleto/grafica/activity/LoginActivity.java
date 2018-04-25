@@ -1,5 +1,6 @@
-package com.via.boleto.grafica;
+package com.via.boleto.grafica.activity;
 /**
+ * Created by lucas.oliveira on 10/03/2018.
  * Changed by Matheus Silva on 09/04/2018.
  * Autentição via web service
  */
@@ -12,6 +13,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.via.boleto.grafica.dao.BaseLocalDAO;
+import com.via.boleto.grafica.util.GraficaUtils;
+import com.via.boleto.grafica.R;
+import com.via.boleto.grafica.util.SharedPref;
+import com.via.boleto.grafica.util.iRetrofit;
 import com.via.boleto.grafica.model.AutenticacaoTO;
 import com.via.boleto.grafica.model.AutenticarPostTO;
 
@@ -26,6 +32,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText txtUsuario;
     private EditText txtSenha;
     private Button btnEntrar;
+
+    //private static UsuarioDAO usuarioDAO;
+    private BaseLocalDAO baseLocalDAO;
 
     private CheckBox chkBoxLogin;
 
@@ -51,6 +60,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void inicializarObjetos(){
 
+
+
         txtUsuario =(EditText) findViewById(R.id.txt_usuario);
         txtSenha =(EditText) findViewById(R.id.txt_senha);
         btnEntrar =(Button) findViewById(R.id.btn_entrar);
@@ -70,14 +81,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (validarUsuarioSenha()){
 
+            baseLocalDAO = new BaseLocalDAO(LoginActivity.this);
+
             AutenticarPostTO autenticar = new AutenticarPostTO();
             autenticar.setUsuario(usuario);
             autenticar.setSenha(senha);
             salvarUsuario();
-            //sendNeworkRequest(autenticar);
 
-            Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
-            startActivity(it);
+            if (GraficaUtils.verificaConexao(LoginActivity.this)){
+
+                sendNeworkRequest(autenticar);
+                //Toast.makeText(LoginActivity.this,  "Login Online", Toast.LENGTH_LONG).show();
+            }else if (baseLocalDAO.usuarioExiste(usuario, senha)){
+
+                //Toast.makeText(LoginActivity.this,  "Login Offline", Toast.LENGTH_LONG).show();
+                Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
+
+                txtUsuario.setText(new SharedPref().getLogin(LoginActivity.this, "login"));
+                txtSenha.setText("");
+
+                startActivity(it);
+            }else{
+                Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_usuario_senha)+"\n"+getString(R.string.erro_conexao), Toast.LENGTH_LONG).show();
+            }
+
+
+
         }else{
             Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+mensagemValidacao.toString(), Toast.LENGTH_LONG).show();
             mensagemValidacao.delete(0, mensagemValidacao.length());
@@ -106,6 +135,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void sendNeworkRequest(AutenticarPostTO autenticar){
+
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl("http://sggfit.azurewebsites.net/api/")
                 .addConverterFactory(GsonConverterFactory.create());
@@ -119,6 +149,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onResponse(Call<AutenticacaoTO> call, Response<AutenticacaoTO> response) {
                 AutenticacaoTO autenticado = response.body();
                 if (autenticado.isexiste()){
+
+                    baseLocalDAO.salvarUsuario(new AutenticarPostTO(usuario, senha));
+
+                    txtUsuario.setText(new SharedPref().getLogin(LoginActivity.this, "login"));
+                    txtSenha.setText("");
+
+                    GraficaUtils.salvarListaProduto(LoginActivity.this);
+
                     Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
                     startActivity(it);
                 }

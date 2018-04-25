@@ -1,4 +1,4 @@
-package com.via.boleto.grafica;
+package com.via.boleto.grafica.fragment;
 
 
 import android.os.Bundle;
@@ -7,8 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.via.boleto.grafica.R;
+import com.via.boleto.grafica.activity.PrincipalActivity;
+
 
 /**
+ * Created by lucas.oliveira on 16/04/2018.
  * A simple {@link Fragment} subclass.
  */
 public class CartaoDebitoFragment extends Fragment {

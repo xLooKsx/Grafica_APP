@@ -2,6 +2,7 @@
     <string name="app_name">Grafica</string>
     <string name="app_principal">Via Boleto</string>
     <string name="title_activity_principal">PrincipalActivity</string>
+    <string name="erro_conexao">Verifique a sua connexão com a internet</string>
 
     <!--*********************MENSAGENS TELA LOGIN-->
     <string name="login_titulo">Seja bem vindo, favor efetue o login</string>
@@ -19,8 +20,6 @@
     <string name="erro_campos_brancos_login">Favor preencher o campo de login</string>
     <string name="erro_campos_brancos_senha">Favor preencher o campo de senha</string>
     <string name="erro_usuario_senha">Verifique os campos de usuario e senha</string>
-    <string name="erro_conexao">Verifique a sua connexão com a internet</string>
-
 
     <!--*********************Menu de Navegacao-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -35,7 +34,13 @@
     <string name="tela_principal_lista_produtos_label">Lista de Produtos</string>
     <string name="tela_principal_sair_label">Sair</string>
 
+
+    <!--*********************MENSAGENS LISTA PRODUTOS-->
+    <string name="lista_produtos_erro">Erro ao carregar Produtos: </string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="meun_atualizar_label">Atualizar</string>
+    <string name="tela_principal_opcoes_label">opçoes</string>
+    <string name="tela_principal_logout_label">Logout</string>
 </resources>

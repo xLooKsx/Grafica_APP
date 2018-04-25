@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.via.boleto.grafica">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -11,7 +12,7 @@
         android:roundIcon="@mipmap/ic_principal"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,14 +20,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PrincipalActivity"
+            android:name=".activity.PrincipalActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:label="@string/title_activity_principal"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ListaProdutosActivity">
+        <activity android:name=".activity.ListaProdutosActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PrincipalActivity"/>
+                android:value=".activity.PrincipalActivity"/>
         </activity>
     </application>
 

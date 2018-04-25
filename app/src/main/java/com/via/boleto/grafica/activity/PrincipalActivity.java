@@ -1,4 +1,4 @@
-package com.via.boleto.grafica;
+package com.via.boleto.grafica.activity;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
@@ -9,21 +9,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.TextView;
 
-import com.via.boleto.grafica.model.ProdutoTO;
+import com.via.boleto.grafica.fragment.CartaoCreditoFragment;
+import com.via.boleto.grafica.fragment.CartaoDebitoFragment;
+import com.via.boleto.grafica.fragment.ConfigEmailFragment;
+import com.via.boleto.grafica.fragment.DinheiroFragment;
+import com.via.boleto.grafica.R;
 
-import java.util.List;
 import java.util.Random;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
+/**
+ * Created by lucas.oliveira on 16/04/2018.
+ */
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -143,16 +143,18 @@ public class PrincipalActivity extends AppCompatActivity
                 fragmentTransaction.commit();
                 break;
 
-            case R.id.nav_config_email:
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_principal, new ConfigEmailFragment());
-                fragmentTransaction.commit();
+            case R.id.nav_logout:
+                    finish();
                 break;
 
             case R.id.nav_sair:
-                //Intent intentLogin = new Intent(PrincipalActivity.this, LoginActivity.class);
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 finish();
-                //startActivity(intentLogin);
+
+                startActivity(intent);
                 break;
 
             case R.id.nav_lista_produtos:
