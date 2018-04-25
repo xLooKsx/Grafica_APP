@@ -1,5 +1,6 @@
 package com.via.boleto.grafica.activity;
 /**
+ * Created by lucas.oliveira on 10/03/2018.
  * Changed by Matheus Silva on 09/04/2018.
  * Autentição via web service
  */
@@ -12,7 +13,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.via.boleto.grafica.dao.UsuarioDAO;
+import com.via.boleto.grafica.dao.BaseLocalDAO;
 import com.via.boleto.grafica.util.GraficaUtils;
 import com.via.boleto.grafica.R;
 import com.via.boleto.grafica.util.SharedPref;
@@ -32,7 +33,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText txtSenha;
     private Button btnEntrar;
 
-    private UsuarioDAO usuarioDAO;
+    //private static UsuarioDAO usuarioDAO;
+    private BaseLocalDAO baseLocalDAO;
 
     private CheckBox chkBoxLogin;
 
@@ -79,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (validarUsuarioSenha()){
 
-            usuarioDAO = new UsuarioDAO(LoginActivity.this);
+            baseLocalDAO = new BaseLocalDAO(LoginActivity.this);
 
             AutenticarPostTO autenticar = new AutenticarPostTO();
             autenticar.setUsuario(usuario);
@@ -90,13 +92,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 sendNeworkRequest(autenticar);
                 //Toast.makeText(LoginActivity.this,  "Login Online", Toast.LENGTH_LONG).show();
-            }else if (usuarioDAO.usuarioExiste(usuario, senha)){
+            }else if (baseLocalDAO.usuarioExiste(usuario, senha)){
 
                 //Toast.makeText(LoginActivity.this,  "Login Offline", Toast.LENGTH_LONG).show();
                 Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
+
+                txtUsuario.setText(new SharedPref().getLogin(LoginActivity.this, "login"));
+                txtSenha.setText("");
+
                 startActivity(it);
             }else{
-                Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_usuario_senha), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_usuario_senha)+"\n"+getString(R.string.erro_conexao), Toast.LENGTH_LONG).show();
             }
 
 
@@ -144,7 +150,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 AutenticacaoTO autenticado = response.body();
                 if (autenticado.isexiste()){
 
-                    usuarioDAO.salvarUsuario(new AutenticarPostTO(usuario, senha));
+                    baseLocalDAO.salvarUsuario(new AutenticarPostTO(usuario, senha));
+
+                    txtUsuario.setText(new SharedPref().getLogin(LoginActivity.this, "login"));
+                    txtSenha.setText("");
+
+                    GraficaUtils.salvarListaProduto(LoginActivity.this);
 
                     Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
                     startActivity(it);

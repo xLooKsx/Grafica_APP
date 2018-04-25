@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.via.boleto.grafica.R;
-import com.via.boleto.grafica.dao.ProdutosDAO;
+import com.via.boleto.grafica.dao.BaseLocalDAO;
 import com.via.boleto.grafica.util.GraficaUtils;
 import com.via.boleto.grafica.util.RVAdapter;
 import com.via.boleto.grafica.util.iRetrofit;
@@ -24,14 +24,15 @@ public class ListaProdutosActivity extends AppCompatActivity {
 
 //    private List<ProdutoTO> produtos;
     private RecyclerView rv;
-    private  ProdutosDAO produtosDAO;
+    //private  ProdutosDAO produtosDAO;
+    private BaseLocalDAO baseLocalDAO;
     private List<ProdutoTO> listaProdutos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_produtos);
-        produtosDAO = new ProdutosDAO(ListaProdutosActivity.this);
+        baseLocalDAO = new BaseLocalDAO(ListaProdutosActivity.this);
 
 
 
@@ -54,7 +55,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
 
     private void mostrarListaOffline() {
 
-        RVAdapter adapter = new RVAdapter(produtosDAO.getProdutos());
+        RVAdapter adapter = new RVAdapter(baseLocalDAO.getProdutos());
         rv.setAdapter(adapter);
     }
 
@@ -62,7 +63,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
 
         for(ProdutoTO produtoDaVez: listaProdutos){
 
-            produtosDAO.salvarProduto(produtoDaVez);
+            baseLocalDAO.salvarProduto(produtoDaVez);
         }
 
     }
@@ -70,7 +71,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
 
     private void initializeData(){
 
-        produtosDAO.apagarConteudoTabela("produto");
+        baseLocalDAO.apagarConteudoTabela("produto");
         iRetrofit retrofit = iRetrofit.retrofit.create(iRetrofit.class);
         final Call<List<ProdutoTO>> call = retrofit.getProduto();
 

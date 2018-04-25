@@ -21,6 +21,9 @@ import com.via.boleto.grafica.R;
 
 import java.util.Random;
 
+/**
+ * Created by lucas.oliveira on 16/04/2018.
+ */
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -140,16 +143,18 @@ public class PrincipalActivity extends AppCompatActivity
                 fragmentTransaction.commit();
                 break;
 
-            case R.id.nav_config_email:
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_principal, new ConfigEmailFragment());
-                fragmentTransaction.commit();
+            case R.id.nav_logout:
+                    finish();
                 break;
 
             case R.id.nav_sair:
-                //Intent intentLogin = new Intent(PrincipalActivity.this, LoginActivity.class);
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 finish();
-                //startActivity(intentLogin);
+
+                startActivity(intent);
                 break;
 
             case R.id.nav_lista_produtos:

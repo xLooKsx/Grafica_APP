@@ -6,23 +6,20 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
+import android.util.Log;
 
+import com.via.boleto.grafica.model.AutenticarPostTO;
 import com.via.boleto.grafica.model.ProdutoTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by lucas.oliveira on 24/04/2018.
- */
-
-public class ProdutosDAO extends SQLiteOpenHelper{
+public class BaseLocalDAO extends SQLiteOpenHelper {
 
     public static final String NOME_BANCO="grafica_app.sqlite";
     public static final int VERSAO_BANCO=1;
 
-    public ProdutosDAO(Context context) {
+    public BaseLocalDAO(Context context) {
         super(context, NOME_BANCO, null, VERSAO_BANCO);
     }
 
@@ -30,16 +27,20 @@ public class ProdutosDAO extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
+        sqLiteDatabase.execSQL("create table if not exists usuario (" +
+                "login text primary key, " +
+                "senha text);");
+
+
         sqLiteDatabase.execSQL("create table if not exists produto (" +
-                                "produtoId integer primary key autoincrement, " +
-                                "nome text," +
-                                "valorVenda real," +
-                                "tipoProduto text );");
+                "produtoId integer primary key autoincrement, " +
+                "nome text," +
+                "valorVenda real," +
+                "tipoProduto text );");
     }
 
-
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int versaoAntiga, int versaoNova) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
 
@@ -52,8 +53,9 @@ public class ProdutosDAO extends SQLiteOpenHelper{
             sqLiteDatabase = getWritableDatabase();
             //sqLiteDatabase.delete("produto", null, null);
             sqLiteDatabase.execSQL("delete from "+ nomeTabela);
+
         }catch (SQLException e){
-            mensagem.append("Erro ao apagar o conteudo de produto: "+"\n"+e.toString());
+            Log.e("apagar base dados", "apagar base dados "+e.toString());
         }finally {
             if (sqLiteDatabase != null){
                 sqLiteDatabase.close();
@@ -78,7 +80,7 @@ public class ProdutosDAO extends SQLiteOpenHelper{
             sqLiteDatabase.insert("produto", "", contentValues);
 
         }catch (SQLException e){
-            mensagem.append("Erro ao salvar o produto: "+"\n"+e.toString());
+            Log.e("Produto Salvo", "Produto Salvo: "+e.toString());
         }finally {
             if (sqLiteDatabase != null){
                 sqLiteDatabase.close();
@@ -89,23 +91,19 @@ public class ProdutosDAO extends SQLiteOpenHelper{
         return mensagem.toString();
     }
 
-
     public List<ProdutoTO> getProdutos(){
 
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         List<ProdutoTO> produtos = new ArrayList<>();
-        StringBuilder mensagem = new StringBuilder();
-        SQLiteDatabase sqLiteDatabase = null;
-        ProdutoTO produtoTO  = null;
 
-        try {
+        try{
 
-            sqLiteDatabase = getWritableDatabase();
             Cursor cursor = sqLiteDatabase.query("produto", null, null, null, null, null, null, null);
 
-
             if (cursor.moveToFirst()){
-                do {
-                    produtoTO = new ProdutoTO();
+
+                do{
+                    ProdutoTO produtoTO = new ProdutoTO();
 
                     produtoTO.setProdutoId(cursor.getInt(cursor.getColumnIndex("produtoId")));
                     produtoTO.setNome(cursor.getString(cursor.getColumnIndex("nome")));
@@ -115,13 +113,68 @@ public class ProdutosDAO extends SQLiteOpenHelper{
                     produtos.add(produtoTO);
                 }while (cursor.moveToNext());
             }
+
         }catch (SQLException e){
-            mensagem.append("Erro ao buscar os produtos: "+"\n"+e.toString());
+            Log.e("Lista Produto", "Lista Produto: "+e.toString());
+        }
+
+        return produtos;
+    }
+
+    public String salvarUsuario(AutenticarPostTO usuario){
+
+        SQLiteDatabase sqLiteDatabase = null;
+        StringBuilder mensagem = new StringBuilder();
+
+        try {
+            if (!usuarioExiste(usuario)){
+
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("login", usuario.getUsuario());
+                contentValues.put("senha", usuario.getSenha());
+
+                sqLiteDatabase = getWritableDatabase();
+                sqLiteDatabase.insert("usuario", "", contentValues);
+            }
+
+
+        }catch (SQLException e){
+            mensagem.append("Erro ao salvar o usuario: "+"\n"+e.toString());
         }finally {
             if (sqLiteDatabase != null){
                 sqLiteDatabase.close();
             }
+
         }
-        return produtos;
+
+        return mensagem.toString();
+    }
+
+    public boolean usuarioExiste(String usuario, String senha) {
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT *  FROM usuario WHERE login = '"+usuario+"' AND senha = '"+senha+"'");
+
+        Cursor cursor = sqLiteDatabase.rawQuery(sql.toString(), null);
+        cursor.moveToFirst();
+
+        //Cursor cursor = getReadableDatabase().rawQuery(sql.toString(), null);
+
+        return (cursor.getCount() > 0);
+    }
+
+    private boolean usuarioExiste(AutenticarPostTO usuario) {
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT * FROM usuario WHERE login = '"+usuario.getUsuario()+"'");
+
+        Cursor cursor = sqLiteDatabase.rawQuery(sql.toString(), null);
+        cursor.moveToFirst();
+
+        return (cursor.getCount() > 0);
     }
 }

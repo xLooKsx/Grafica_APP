@@ -12,6 +12,7 @@ import com.via.boleto.grafica.activity.PrincipalActivity;
 
 
 /**
+ * Created by lucas.oliveira on 16/04/2018.
  * A simple {@link Fragment} subclass.
  */
 public class CartaoCreditoFragment extends Fragment {
