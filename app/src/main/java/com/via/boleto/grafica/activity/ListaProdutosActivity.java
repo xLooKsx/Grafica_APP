@@ -48,6 +48,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
              //Toast.makeText(ListaProdutosActivity.this,  "Lista Online", Toast.LENGTH_LONG).show();
          }else{
              mostrarListaOffline();
+             GraficaUtils.mostrarStatusDaddos(ListaProdutosActivity.this);
             // Toast.makeText(ListaProdutosActivity.this,  "Lista Offline", Toast.LENGTH_LONG).show();
          }
 

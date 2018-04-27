@@ -1,5 +1,6 @@
 package com.via.boleto.grafica.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import com.via.boleto.grafica.fragment.CartaoDebitoFragment;
 import com.via.boleto.grafica.fragment.ConfigEmailFragment;
 import com.via.boleto.grafica.fragment.DinheiroFragment;
 import com.via.boleto.grafica.R;
+import com.via.boleto.grafica.util.GraficaUtils;
 
 import java.util.Random;
 
@@ -52,7 +55,13 @@ public class PrincipalActivity extends AppCompatActivity
         fragmentTransaction.commit();
 
         navigationView.setCheckedItem(R.id.nav_dinheiro);
+
+        GraficaUtils.mostrarStatusDaddos(PrincipalActivity.this);
+
+
     }
+
+
 
     public void setActionBarTitle(String title){
 
@@ -89,6 +98,8 @@ public class PrincipalActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_atualizar) {
 
+            GraficaUtils.mostrarStatusDaddos(PrincipalActivity.this);
+
             switch (idMenu){
 
                 case R.id.nav_dinheiro:
@@ -122,6 +133,7 @@ public class PrincipalActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        GraficaUtils.mostrarStatusDaddos(PrincipalActivity.this);
 
         switch (id){
 
