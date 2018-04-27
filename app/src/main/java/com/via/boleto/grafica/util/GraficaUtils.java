@@ -2,6 +2,7 @@ package com.via.boleto.grafica.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import com.via.boleto.grafica.R;
@@ -19,6 +20,8 @@ import retrofit2.Response;
  */
 
 public class GraficaUtils {
+
+    private static boolean mensagemInformada = false;
 
     public static boolean notNullNotBlank(String texto){
 
@@ -60,13 +63,38 @@ public class GraficaUtils {
             public void onFailure(Call<List<ProdutoTO>> call, Throwable t) {
             }
         });
-
-
     }
 
     private static void salvarListaProduto(List<ProdutoTO> listaProdutos, BaseLocalDAO baseLocalDAO){
         for(ProdutoTO produtoDaVez: listaProdutos){
             baseLocalDAO.salvarProduto(produtoDaVez);
+        }
+    }
+
+    public static void mostrarStatusDaddos(Context context) {
+
+        if (!GraficaUtils.verificaConexao(context) && !mensagemInformada){
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Status");
+            builder.setMessage(context.getString(R.string.status_conexao_erro));
+            builder.setPositiveButton("OK", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            mensagemInformada = true;
+        }else if (GraficaUtils.verificaConexao(context) && mensagemInformada){
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Status");
+            builder.setMessage(context.getString(R.string.status_conexao_sucesso));
+            builder.setPositiveButton("OK", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            mensagemInformada = false;
         }
     }
 }

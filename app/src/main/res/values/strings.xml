@@ -3,6 +3,8 @@
     <string name="app_principal">Via Boleto</string>
     <string name="title_activity_principal">PrincipalActivity</string>
     <string name="erro_conexao">Verifique a sua connexão com a internet</string>
+    <string name="status_conexao_erro">O seu dispositivo não esta conectado a internet, as informaçoes apresentadas podem estar desatualizadas, para informaçoes mais precisas favor conecte-se a Internet</string>
+    <string name="status_conexao_sucesso">O seu dispositivo esta conectado a internet, as informaçoes serão atualizadas</string>
 
     <!--*********************MENSAGENS TELA LOGIN-->
     <string name="login_titulo">Seja bem vindo, favor efetue o login</string>
