@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.via.boleto.grafica.R;
@@ -23,6 +25,7 @@ import retrofit2.Response;
 public class ListaProdutosActivity extends AppCompatActivity {
 
     private RecyclerView rv;
+    private ProgressBar progressBar;
     private BaseLocalDAO baseLocalDAO;
     private List<ProdutoTO> listaProdutos = new ArrayList<>();
 
@@ -30,24 +33,36 @@ public class ListaProdutosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_produtos);
+
+        iniciarObjetos();
+
         baseLocalDAO = new BaseLocalDAO(ListaProdutosActivity.this);
-
-
-        rv=(RecyclerView)findViewById(R.id.rv);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
+        rv.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 
-         if (GraficaUtils.verificaConexao(ListaProdutosActivity.this)){
+
+        if (GraficaUtils.verificaConexao(ListaProdutosActivity.this)){
              GraficaUtils.mostrarStatusDaddos(ListaProdutosActivity.this);
              initializeData();
+            progressBar.setVisibility(View.GONE);
+            rv.setVisibility(View.VISIBLE);
          }else{
              mostrarListaOffline();
              GraficaUtils.mostrarStatusDaddos(ListaProdutosActivity.this);
+            progressBar.setVisibility(View.GONE);
+            rv.setVisibility(View.VISIBLE);
          }
+    }
 
+    private void iniciarObjetos(){
+
+        rv=(RecyclerView)findViewById(R.id.rv);
+        progressBar = (ProgressBar) findViewById(R.id.progressBarListaProduto);
     }
 
     private void mostrarListaOffline() {
@@ -62,7 +77,6 @@ public class ListaProdutosActivity extends AppCompatActivity {
 
             baseLocalDAO.salvarProduto(produtoDaVez);
         }
-
     }
 
 
