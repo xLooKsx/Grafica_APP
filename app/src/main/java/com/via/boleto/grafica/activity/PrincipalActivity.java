@@ -57,10 +57,7 @@ public class PrincipalActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_dinheiro);
 
         GraficaUtils.mostrarStatusDaddos(PrincipalActivity.this);
-
-
     }
-
 
 
     public void setActionBarTitle(String title){
@@ -133,25 +130,28 @@ public class PrincipalActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        GraficaUtils.mostrarStatusDaddos(PrincipalActivity.this);
+
 
         switch (id){
 
             case R.id.nav_dinheiro:
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_principal, new DinheiroFragment());
+                GraficaUtils.mostrarStatusDaddos(PrincipalActivity.this);
                 fragmentTransaction.commit();
                 break;
 
             case R.id.nav_cartao_debito:
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_principal, new CartaoDebitoFragment());
+                GraficaUtils.mostrarStatusDaddos(PrincipalActivity.this);
                 fragmentTransaction.commit();
                 break;
 
             case R.id.nav_cartao_credito:
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_principal, new CartaoCreditoFragment());
+                GraficaUtils.mostrarStatusDaddos(PrincipalActivity.this);
                 fragmentTransaction.commit();
                 break;
 
