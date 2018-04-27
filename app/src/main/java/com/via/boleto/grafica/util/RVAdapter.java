@@ -42,9 +42,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
         this.persons = persons;
     }
 
-    /* RVAdapter(List<ProdutoTO> persons){
-        this.persons = persons;
-    }*/
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

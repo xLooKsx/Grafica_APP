@@ -160,8 +160,6 @@ public class BaseLocalDAO extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.rawQuery(sql.toString(), null);
         cursor.moveToFirst();
 
-        //Cursor cursor = getReadableDatabase().rawQuery(sql.toString(), null);
-
         return (cursor.getCount() > 0);
     }
 

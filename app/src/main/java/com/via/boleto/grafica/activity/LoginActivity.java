@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText txtSenha;
     private Button btnEntrar;
 
-    //private static UsuarioDAO usuarioDAO;
     private BaseLocalDAO baseLocalDAO;
 
     private CheckBox chkBoxLogin;
@@ -91,10 +90,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (GraficaUtils.verificaConexao(LoginActivity.this)){
 
                 sendNeworkRequest(autenticar);
-                //Toast.makeText(LoginActivity.this,  "Login Online", Toast.LENGTH_LONG).show();
             }else if (baseLocalDAO.usuarioExiste(usuario, senha)){
 
-                //Toast.makeText(LoginActivity.this,  "Login Offline", Toast.LENGTH_LONG).show();
                 Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
 
                 txtUsuario.setText(new SharedPref().getLogin(LoginActivity.this, "login"));
@@ -104,9 +101,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }else{
                 Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_usuario_senha)+"\n"+getString(R.string.erro_conexao), Toast.LENGTH_LONG).show();
             }
-
-
-
         }else{
             Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+mensagemValidacao.toString(), Toast.LENGTH_LONG).show();
             mensagemValidacao.delete(0, mensagemValidacao.length());

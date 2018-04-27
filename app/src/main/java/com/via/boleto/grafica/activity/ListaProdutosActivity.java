@@ -22,9 +22,7 @@ import retrofit2.Response;
 
 public class ListaProdutosActivity extends AppCompatActivity {
 
-//    private List<ProdutoTO> produtos;
     private RecyclerView rv;
-    //private  ProdutosDAO produtosDAO;
     private BaseLocalDAO baseLocalDAO;
     private List<ProdutoTO> listaProdutos = new ArrayList<>();
 
@@ -35,7 +33,6 @@ public class ListaProdutosActivity extends AppCompatActivity {
         baseLocalDAO = new BaseLocalDAO(ListaProdutosActivity.this);
 
 
-
         rv=(RecyclerView)findViewById(R.id.rv);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -44,12 +41,11 @@ public class ListaProdutosActivity extends AppCompatActivity {
 
 
          if (GraficaUtils.verificaConexao(ListaProdutosActivity.this)){
+             GraficaUtils.mostrarStatusDaddos(ListaProdutosActivity.this);
              initializeData();
-             //Toast.makeText(ListaProdutosActivity.this,  "Lista Online", Toast.LENGTH_LONG).show();
          }else{
              mostrarListaOffline();
              GraficaUtils.mostrarStatusDaddos(ListaProdutosActivity.this);
-            // Toast.makeText(ListaProdutosActivity.this,  "Lista Offline", Toast.LENGTH_LONG).show();
          }
 
     }

@@ -45,4 +45,5 @@
     <string name="meun_atualizar_label">Atualizar</string>
     <string name="tela_principal_opcoes_label">opçoes</string>
     <string name="tela_principal_logout_label">Logout</string>
+    <string name="login_lembrar_usuario_label">Lembrar Usuario</string>
 </resources>

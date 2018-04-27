@@ -55,7 +55,6 @@ public class GraficaUtils {
                 if (code == 200){
                     List<ProdutoTO> listaProdutos = response.body();
                         salvarListaProduto(listaProdutos, baseLocalDAO);
-
                 }
             }
 
