@@ -172,15 +172,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
                     startActivity(it);
+                    esconderBarProgress();
                 }
                 else{
                     Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_usuario_senha), Toast.LENGTH_LONG).show();
+                    esconderBarProgress();
                 }
             }
 
             @Override
             public void onFailure(Call<AutenticacaoTO> call, Throwable t) {
                 Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_conexao), Toast.LENGTH_LONG).show();
+                esconderBarProgress();
             }
         });
 
