@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.via.boleto.grafica.dao.BaseLocalDAO;
@@ -32,13 +33,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText txtUsuario;
     private EditText txtSenha;
     private Button btnEntrar;
+    private ProgressBar progressBar;
 
     private BaseLocalDAO baseLocalDAO;
 
     private CheckBox chkBoxLogin;
-
-    private String usuario="";
-    private String senha="";
 
     private StringBuilder mensagemValidacao = new StringBuilder();
 
@@ -47,6 +46,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         inicializarObjetos();
+
+
+       txtSenha.getText().toString();
+
         carregarUsuario();
         btnEntrar.setOnClickListener(this);
 
@@ -58,13 +61,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void inicializarObjetos(){
-
-
-
         txtUsuario =(EditText) findViewById(R.id.txt_usuario);
         txtSenha =(EditText) findViewById(R.id.txt_senha);
         btnEntrar =(Button) findViewById(R.id.btn_entrar);
         chkBoxLogin = (CheckBox) findViewById(R.id.chkBoxLembrarLogin);
+        progressBar = (ProgressBar) findViewById(R.id.progressBarLogin);
+    }
+
+    private void mostrarBarProgress(){
+
+        progressBar.setVisibility(View.VISIBLE);
+        btnEntrar.setVisibility(View.GONE);
+    }
+
+    private void esconderBarProgress(){
+
+        progressBar.setVisibility(View.GONE);
+        btnEntrar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -75,45 +88,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
 
-        usuario = txtUsuario.getText().toString();
-        senha  = txtSenha.getText().toString();
+
+
+        mostrarBarProgress();
 
         if (validarUsuarioSenha()){
 
             baseLocalDAO = new BaseLocalDAO(LoginActivity.this);
 
             AutenticarPostTO autenticar = new AutenticarPostTO();
-            autenticar.setUsuario(usuario);
-            autenticar.setSenha(senha);
+            autenticar.setUsuario(txtUsuario.getText().toString());
+            autenticar.setSenha(txtSenha.getText().toString());
             salvarUsuario();
 
             if (GraficaUtils.verificaConexao(LoginActivity.this)){
 
                 sendNeworkRequest(autenticar);
-            }else if (baseLocalDAO.usuarioExiste(usuario, senha)){
+            }else if (baseLocalDAO.usuarioExiste(txtUsuario.getText().toString(), txtUsuario.getText().toString())){
 
                 Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
 
                 txtUsuario.setText(new SharedPref().getLogin(LoginActivity.this, "login"));
                 txtSenha.setText("");
 
+                esconderBarProgress();
+
                 startActivity(it);
             }else{
                 Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_usuario_senha)+"\n"+getString(R.string.erro_conexao), Toast.LENGTH_LONG).show();
+                esconderBarProgress();
             }
         }else{
             Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+mensagemValidacao.toString(), Toast.LENGTH_LONG).show();
             mensagemValidacao.delete(0, mensagemValidacao.length());
+            esconderBarProgress();
         }
     }
 
     private boolean validarUsuarioSenha() {
 
-        if (!GraficaUtils.notNullNotBlank(usuario)){
+        if (!GraficaUtils.notNullNotBlank(txtUsuario.getText().toString())){
             mensagemValidacao.append(getString(R.string.erro_campos_brancos_login)+"\n");
         }
 
-        if (!GraficaUtils.notNullNotBlank(senha)){
+        if (!GraficaUtils.notNullNotBlank(txtSenha.getText().toString())){
             mensagemValidacao.append(getString(R.string.erro_campos_brancos_senha));
         }
 
@@ -122,8 +140,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void salvarUsuario() {
 
-        if (chkBoxLogin.isChecked() && GraficaUtils.notNullNotBlank(usuario)){
-            new SharedPref().setLogin(LoginActivity.this, "login", usuario);
+        if (chkBoxLogin.isChecked() && GraficaUtils.notNullNotBlank(txtUsuario.getText().toString())){
+            new SharedPref().setLogin(LoginActivity.this, "login", txtUsuario.getText().toString());
             Toast.makeText(LoginActivity.this,  getString(R.string.login_salvo), Toast.LENGTH_LONG).show();
         }
     }
@@ -144,12 +162,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 AutenticacaoTO autenticado = response.body();
                 if (autenticado.isexiste()){
 
-                    baseLocalDAO.salvarUsuario(new AutenticarPostTO(usuario, senha));
+                    baseLocalDAO.salvarUsuario(new AutenticarPostTO(txtUsuario.getText().toString(), txtSenha.getText().toString()));
 
                     txtUsuario.setText(new SharedPref().getLogin(LoginActivity.this, "login"));
                     txtSenha.setText("");
 
                     GraficaUtils.salvarListaProduto(LoginActivity.this);
+
 
                     Intent it = new Intent(LoginActivity.this, PrincipalActivity.class);
                     startActivity(it);
@@ -157,7 +176,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 else{
                     Toast.makeText(LoginActivity.this,  getString(R.string.login_erro)+"\n"+getString(R.string.erro_usuario_senha), Toast.LENGTH_LONG).show();
                 }
-
             }
 
             @Override
