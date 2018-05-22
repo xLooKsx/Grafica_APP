@@ -41,7 +41,7 @@ public class GraficaUtils {
 
     public static void salvarListaProduto(Context context){
 
-       final BaseLocalDAO baseLocalDAO = new BaseLocalDAO(context);
+        final BaseLocalDAO baseLocalDAO = new BaseLocalDAO(context);
 
 
         baseLocalDAO.apagarConteudoTabela("produto");
@@ -54,7 +54,7 @@ public class GraficaUtils {
                 int code = response.code();
                 if (code == 200){
                     List<ProdutoTO> listaProdutos = response.body();
-                        salvarListaProduto(listaProdutos, baseLocalDAO);
+                    salvarListaProduto(listaProdutos, baseLocalDAO);
                 }
             }
 
@@ -95,6 +95,31 @@ public class GraficaUtils {
 
             mensagemInformada = false;
         }
+    }
+
+    public String sendRequestDinheito(){
+
+        iRetrofit retrofit = iRetrofit.retrofit.create(iRetrofit.class);
+        final Call<Object> call = retrofit.getDinheiro();
+        final String[] valor = {"vazio"};
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                int code = response.code();
+                if (code == 200){
+
+                    valor[0] =  response.body().toString().substring(7, 12);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+
+
+            }
+        });
+
+        return valor[0];
     }
 }
 

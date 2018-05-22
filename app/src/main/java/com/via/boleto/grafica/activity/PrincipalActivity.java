@@ -14,15 +14,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.via.boleto.grafica.fragment.CartaoCreditoFragment;
 import com.via.boleto.grafica.fragment.CartaoDebitoFragment;
 import com.via.boleto.grafica.fragment.ConfigEmailFragment;
 import com.via.boleto.grafica.fragment.DinheiroFragment;
 import com.via.boleto.grafica.R;
+import com.via.boleto.grafica.model.FaturamentoTO;
+import com.via.boleto.grafica.model.ProdutoTO;
 import com.via.boleto.grafica.util.GraficaUtils;
+import com.via.boleto.grafica.util.RVAdapter;
+import com.via.boleto.grafica.util.SharedPref;
+import com.via.boleto.grafica.util.iRetrofit;
 
+import java.util.List;
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by lucas.oliveira on 16/04/2018.
@@ -33,6 +44,15 @@ public class PrincipalActivity extends AppCompatActivity
     private FragmentTransaction fragmentTransaction;
     private NavigationView navigationView;
     private int idMenu = R.id.nav_dinheiro;
+
+    private static String valorDinheiro="vazio";
+    private static String valorCredito="vazio";
+    private static String valorDebito="vazio";
+
+    public PrincipalActivity() {
+        sendRequestDinheito();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +70,9 @@ public class PrincipalActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+
+
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_principal, new DinheiroFragment());
         fragmentTransaction.commit();
@@ -63,6 +86,13 @@ public class PrincipalActivity extends AppCompatActivity
     public void setActionBarTitle(String title){
 
         getSupportActionBar().setTitle(title);
+        sendRequestDinheito();
+        sendRequestCredito();
+        sendRequestDebito();
+
+        new SharedPref().setLogin(PrincipalActivity.this, "vlrDinheiro", valorDinheiro);
+        new SharedPref().setLogin(PrincipalActivity.this, "vlrCredito", valorCredito);
+        new SharedPref().setLogin(PrincipalActivity.this, "vlrDebito", valorDebito);
     }
 
     @Override
@@ -90,31 +120,31 @@ public class PrincipalActivity extends AppCompatActivity
         int id = item.getItemId();
         Random r = new Random();
         TextView txtViewNovoValor;
-        int novoValor;
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_atualizar) {
 
             GraficaUtils.mostrarStatusDaddos(PrincipalActivity.this);
 
+
+
+
             switch (idMenu){
 
                 case R.id.nav_dinheiro:
+
                     txtViewNovoValor = (TextView)findViewById(R.id.txt_vlrdinheiro);
-                    novoValor = r.nextInt(800 - 10) + 65;
-                    txtViewNovoValor.setText("R$ "+String.valueOf(novoValor)+",00");
+                    txtViewNovoValor.setText("R$ "+valorDinheiro);
                     break;
 
                 case R.id.nav_cartao_debito:
                     txtViewNovoValor = (TextView)findViewById(R.id.txt_vlrCartaoDebito);
-                    novoValor = r.nextInt(400 - 10) + 65;
-                    txtViewNovoValor.setText("R$ "+String.valueOf(novoValor)+",00");
+                    txtViewNovoValor.setText("R$ "+valorDebito);
                     break;
 
                 case R.id.nav_cartao_credito:
                     txtViewNovoValor = (TextView)findViewById(R.id.txt_vlrCartaoCredito);
-                    novoValor = r.nextInt(328 - 10) + 65;
-                    txtViewNovoValor.setText("R$ "+String.valueOf(novoValor)+",00");
+                    txtViewNovoValor.setText("R$ "+valorCredito);
                     break;
             }
 
@@ -156,7 +186,7 @@ public class PrincipalActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_logout:
-                    finish();
+                finish();
                 break;
 
             case R.id.nav_sair:
@@ -179,5 +209,76 @@ public class PrincipalActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         idMenu = id;
         return true;
+    }
+
+    public void sendRequestDinheito(){
+
+        iRetrofit retrofit = iRetrofit.retrofit.create(iRetrofit.class);
+        final Call<Object> call = retrofit.getDinheiro();
+
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                int code = response.code();
+                if (code == 200){
+
+                    valorDinheiro = response.body().toString().substring(7, 12);
+                    new SharedPref().setLogin(PrincipalActivity.this, "vlrDinheiro", valorDinheiro);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+
+
+            }
+        });
+    }
+
+    public void sendRequestCredito(){
+
+        iRetrofit retrofit = iRetrofit.retrofit.create(iRetrofit.class);
+        final Call<Object> call = retrofit.getCredito();
+
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                int code = response.code();
+                if (code == 200){
+
+                    valorCredito = response.body().toString().substring(7, 12);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+
+
+            }
+        });
+    }
+
+    public void sendRequestDebito(){
+
+        iRetrofit retrofit = iRetrofit.retrofit.create(iRetrofit.class);
+        final Call<Object> call = retrofit.getDebito();
+
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                int code = response.code();
+                if (code == 200){
+
+                    valorDebito = response.body().toString().substring(7, 12);
+                    new SharedPref().setLogin(PrincipalActivity.this, "vlrDinheiro", valorDinheiro);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+
+
+            }
+        });
     }
 }
