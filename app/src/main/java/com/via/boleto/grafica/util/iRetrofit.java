@@ -5,6 +5,7 @@ package com.via.boleto.grafica.util;
 import com.google.gson.JsonObject;
 import com.via.boleto.grafica.model.AutenticacaoTO;
 import com.via.boleto.grafica.model.AutenticarPostTO;
+import com.via.boleto.grafica.model.FaturamentoTO;
 import com.via.boleto.grafica.model.ProdutoTO;
 
 import java.util.List;
@@ -25,8 +26,14 @@ public interface iRetrofit {
     @POST("/Api/Usuario/")
     Call<AutenticacaoTO> getAutenticacao(@Body AutenticarPostTO autenticarPostTO);
 
-//    @GET("Dinheiro")
-//    Call<CreditoTo> getDinheiro();
+    @GET("Pedidos/GetTotalPedidosMesDinheiro/")
+    Call<Object> getDinheiro();
+
+    @GET("Pedidos/GetTotalPedidosMesCredito/")
+    Call<Object> getCredito();
+
+    @GET("Pedidos/GetTotalPedidosMesDebito/")
+    Call<Object> getDebito();
 //
 //    @GET("Dinheiro")
 //    Call<DebitoTo> getDinheiro();

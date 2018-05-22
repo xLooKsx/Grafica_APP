@@ -37,6 +37,18 @@ public class BaseLocalDAO extends SQLiteOpenHelper {
                 "nome text," +
                 "valorVenda real," +
                 "tipoProduto text );");
+
+        sqLiteDatabase.execSQL("create table if not exists valorDinheiro (" +
+                "valorDinheiro integer primary key autoincrement, " +
+                "valor text);");
+
+        sqLiteDatabase.execSQL("create table if not exists valorCredito (" +
+                "valorCredito integer primary key autoincrement, " +
+                "valor text);");
+
+        sqLiteDatabase.execSQL("create table if not exists valorDebito (" +
+                "valorDebito integer primary key autoincrement, " +
+                "valor text);");
     }
 
     @Override
@@ -119,6 +131,163 @@ public class BaseLocalDAO extends SQLiteOpenHelper {
         }
 
         return produtos;
+    }
+
+
+    public String salvarVlrDinheiro(String valor){
+
+        SQLiteDatabase sqLiteDatabase = null;
+        StringBuilder mensagem = new StringBuilder();
+
+        try {
+
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("valor", valor);
+
+            sqLiteDatabase = getWritableDatabase();
+            sqLiteDatabase.insert("valorDinheiro", "", contentValues);
+
+
+
+        }catch (SQLException e){
+            mensagem.append("Erro ao salvar o valorDinheiro: "+"\n"+e.toString());
+        }finally {
+            if (sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+
+        }
+
+        return mensagem.toString();
+    }
+
+    public String getValorDinheiro(String tabela){
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String valor = "vazio";
+
+        try{
+
+            Cursor cursor = sqLiteDatabase.query("valorDinheiro", null, null, null, null, null, null, null);
+
+            if (cursor.moveToFirst()){
+
+                do{
+
+                    valor = cursor.getString(cursor.getColumnIndex("valor"));
+
+                }while (cursor.moveToNext());
+            }
+
+        }catch (SQLException e){
+        }
+
+        return valor;
+    }
+
+    public String salvarVlrCredito(String valor){
+
+        SQLiteDatabase sqLiteDatabase = null;
+        StringBuilder mensagem = new StringBuilder();
+
+        try {
+
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("valor", valor);
+
+            sqLiteDatabase = getWritableDatabase();
+            sqLiteDatabase.insert("valorCredito", "", contentValues);
+
+
+
+        }catch (SQLException e){
+            mensagem.append("Erro ao salvar o valorCredito: "+"\n"+e.toString());
+        }finally {
+            if (sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+
+        }
+
+        return mensagem.toString();
+    }
+
+    public String getValorCredito(String tabela){
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String valor = "vazio";
+
+        try{
+
+            Cursor cursor = sqLiteDatabase.query("valorCredito", null, null, null, null, null, null, null);
+
+            if (cursor.moveToFirst()){
+
+                do{
+
+                    valor = cursor.getString(cursor.getColumnIndex("valor"));
+
+                }while (cursor.moveToNext());
+            }
+
+        }catch (SQLException e){
+        }
+
+        return valor;
+    }
+
+    public String salvarVlrDebito(String valor){
+
+        SQLiteDatabase sqLiteDatabase = null;
+        StringBuilder mensagem = new StringBuilder();
+
+        try {
+
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("valor", valor);
+
+            sqLiteDatabase = getWritableDatabase();
+            sqLiteDatabase.insert("valorDebito", "", contentValues);
+
+
+
+        }catch (SQLException e){
+            mensagem.append("Erro ao salvar o valorDebito: "+"\n"+e.toString());
+        }finally {
+            if (sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+
+        }
+
+        return mensagem.toString();
+    }
+
+    public String getValorDebito(String tabela){
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String valor = "vazio";
+
+        try{
+
+            Cursor cursor = sqLiteDatabase.query("valorDebito", null, null, null, null, null, null, null);
+
+            if (cursor.moveToFirst()){
+
+                do{
+
+                    valor = cursor.getString(cursor.getColumnIndex("valor"));
+
+                }while (cursor.moveToNext());
+            }
+
+        }catch (SQLException e){
+        }
+
+        return valor;
     }
 
     public String salvarUsuario(AutenticarPostTO usuario){
